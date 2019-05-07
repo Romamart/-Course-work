@@ -44,7 +44,7 @@ class BitcoinNetwork:
         singleOrphanRate = self.__orphanRate / (self.__orphanRate + 1)
         for i in range(numBlocks):
 
-            if miningRNG.triangular() < self.__churnProbability:
+            if miningRNG.random() < self.__churnProbability:
                 networkStatistics = self.__churnFunction.churnNetwork(self, self.__orphanRate, miners)
                 # for m in miners:
                 #     m.networkUpdate(networkStatistics)
@@ -57,9 +57,9 @@ class BitcoinNetwork:
                 winnningMiners.update(minerDoubleSimpleEntry)
             winnningMiners = list(sorted(winnningMiners.items(), key=operator.itemgetter(1)))
 
+
             for j in range(len(winnningMiners)):
                 winnningMiners[j] = dict([winnningMiners[j]])
-            # print(winnningMiners)
             initialMessages = dict()
             currentOrphanProbability = singleOrphanRate
             minedRewards = dict()
@@ -72,7 +72,8 @@ class BitcoinNetwork:
                 blockMassage = self.__BlockMassage(nextBlock, winningMiner)
                 minedRewards = self.__merge(minedRewards, {winningMiner: reward})
                 initialMessages.update({blockMassage: 0.})
-                if miningRNG.triangular() < currentOrphanProbability:
+                k = miningRNG.random()
+                if k < currentOrphanProbability:
                     currentOrphanProbability *= singleOrphanRate
                 else:
                     break

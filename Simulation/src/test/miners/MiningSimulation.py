@@ -1,3 +1,5 @@
+import operator
+
 from src.main.blockchain.BitcoinNetwork import BitcoinNetwork
 from src.main.blockchain.FixedChurnFunction import FixedChurnFunction
 from src.main.blockchain.FixedReward import FixedReward
@@ -56,7 +58,7 @@ class MiningSimulation:
                 winningMiner = current.getMinedBy()
                 profits = self.__merge(profits, {winningMiner: current.getBlockValue()})
                 current = current.getPreviousBlock()
-
+        profits = dict(sorted(profits.items(), key=operator.itemgetter(1), reverse=True))
         relativeProfits = dict()
         totalProfits = sum(profits.values())
         for winingMiner in profits:
@@ -65,6 +67,7 @@ class MiningSimulation:
             # logging.info("{0} has made {1}% of the profits".format(winingMiner, 100. * relativeProfit))
             print("{0} has made {1}% of the profits".format(winingMiner, 100. * relativeProfit))
             relativeProfits.update({winingMiner: relativeProfit})
+        print(sum(relativeProfits.values()))
         return relativeProfits
 
 

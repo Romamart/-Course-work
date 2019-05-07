@@ -17,7 +17,7 @@ class SimulationRandom(Random):
         return math.exp(mu + self.gauss_next * sigma)
 
     def sampleExponential(self, lambda1):
-        return math.log(1 - super(SimulationRandom, self).triangular()) / -lambda1
+        return math.log(1 - super(SimulationRandom, self).random()) / -lambda1
 
     def sampleExponentialRandom(self, lambda1):
-        return math.log(1 - Random.triangular(self)) / -lambda1
+        return math.log(1 - Random.random(self)) / -lambda1
